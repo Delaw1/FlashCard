@@ -2,6 +2,7 @@
   "expo": {
     "name": "FlashCard",
     "slug": "FlashCard",
+    "owner": "FlashCard",
     "platforms": [
       "ios",
       "android",

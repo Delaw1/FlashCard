@@ -5,9 +5,15 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
-import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
+
+import HomeScreen from './screens/HomeScreen';
+import DeckScreen from './screens/DeckScreen';
+import AddCardScreen from './screens/AddCardScreen'
+import QuizScreen from './screens/QuizScreen'
+import AddDeckScreen from './screens/AddDeckScreen';
+
+import { setLocalNotification } from './notification/notification'
 
 const Stack = createStackNavigator();
 
@@ -17,8 +23,11 @@ export default function App(props) {
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
 
+  setLocalNotification()
+
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
+    // getPushNotificationPermissions();
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
@@ -43,6 +52,8 @@ export default function App(props) {
     loadResourcesAndDataAsync();
   }, []);
 
+ 
+
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
   } else {
@@ -51,7 +62,45 @@ export default function App(props) {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
+            {/* <Stack.Screen name="Root" component={BottomTabNavigator} /> */}
+            <Stack.Screen
+              name="Root"
+              component={HomeScreen}
+              options={{
+                title: 'Decks',
+              }}
+            />
+            <Stack.Screen 
+              name="AddDeck"
+              component={AddDeckScreen}
+              options={{
+                title: 'Add Deck'
+              }}
+            />
+
+            <Stack.Screen 
+              name="Deck"
+              component={DeckScreen}
+              options={{
+                title: 'Deck'
+              }}
+            />
+
+            <Stack.Screen 
+              name="AddCard"
+              component={AddCardScreen}
+              options={{
+                title: 'Add Card'
+              }}
+            />
+
+            <Stack.Screen 
+              name="Quiz"
+              component={QuizScreen}
+              options={{
+                title: 'Quiz'
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
@@ -65,3 +114,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+
